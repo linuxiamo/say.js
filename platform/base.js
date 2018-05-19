@@ -143,6 +143,56 @@ class SayPlatformBase {
     callback(null)
   }
 
+  /**
+   * Pause currently playing audio. 
+   *
+   * @param {Function|null} callback A callback of type function(err) to return.
+   */
+  pause (callback) {
+    if (typeof callback !== 'function') {
+      callback = () => {}
+    }
+
+    callback = once(callback)
+
+    if (!this.child) {
+      return setImmediate(() => {
+        callback(new Error('say.stop(): no speech to kill'))
+      })
+    }
+
+    this.runPauseCommand()
+
+    this.child = null
+
+    callback(null)
+  }
+  
+  /**
+   * Resume paused audio. 
+   *
+   * @param {Function|null} callback A callback of type function(err) to return.
+   */
+  resume (callback) {
+    if (typeof callback !== 'function') {
+      callback = () => {}
+    }
+
+    callback = once(callback)
+
+    if (!this.child) {
+      return setImmediate(() => {
+        callback(new Error('say.stop(): no speech to kill'))
+      })
+    }
+
+    this.runResumeCommand()
+
+    this.child = null
+
+    callback(null)
+  }
+  
   convertSpeed (speed) {
     return Math.ceil(this.baseSpeed * speed)
   }
