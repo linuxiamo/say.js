@@ -45,6 +45,14 @@ class SayPlatformWin32 extends SayPlatformBase {
     childProcess.exec(`taskkill /pid ${this.child.pid} /T /F`)
   }
 
+  runPauseCommand () {
+    this.child.stdin.pause()
+  }  
+
+  runResumeCommand () {
+    this.child.stdin.resume()
+  }    
+  
   convertSpeed (speed) {
     // Overriden to map playback speed (as a ratio) to Window's values (-10 to 10, zero meaning x1.0)
     return Math.max(-10, Math.min(Math.round((9.0686 * Math.log(speed)) - 0.1806), 10))
